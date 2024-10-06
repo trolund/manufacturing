@@ -1,6 +1,6 @@
 import { EquipmentState } from "../models/EquipmentState";
 
-export const getColorClasses = (status: EquipmentState | null) => {
+export const getColorClasses = (status: EquipmentState | null | undefined) => {
   switch (status) {
     case EquipmentState.Green:
       return "bg-green-500";

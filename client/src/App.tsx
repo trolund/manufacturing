@@ -10,11 +10,21 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <header className="bg-gray-900 text-white flex items-center h-12 w-full">
-        <div className="container mx-auto">
+      <header className="bg-gray-900 text-white flex items-center h-12 w-full sticky top-0">
+        <div className="container max-w-screen-lg mx-auto flex justify-between p-10">
           <a className="navbar-brand" href="/">
             Factory manager
           </a>
+          <nav>
+            <ul className="flex gap-4">
+              <li>
+                <a href="/">Overview</a>
+              </li>
+              <li>
+                <a href="/history">History</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </header>
 

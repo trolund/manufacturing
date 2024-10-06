@@ -9,6 +9,11 @@ import { EquipmentOverview } from "../models/EquipmentOverview";
 import { EquipmentState } from "../models/EquipmentState";
 import { useQueryClient } from "@tanstack/react-query";
 import { BASE_URL_SIGNALR } from "../contants/constants";
+import { getColorClasses } from "../services/ClassesService";
+import {
+  formatDate,
+  getEquipmentStateName,
+} from "../services/FormatingService";
 
 export default function EquipmentPage() {
   const { equipmentId } = useParams();
@@ -48,21 +53,6 @@ export default function EquipmentPage() {
       .catch((err) => console.error(err));
   }, [connection, isconnected]);
 
-  const getEquipmentStatusColor = (
-    status: EquipmentState | undefined | null
-  ) => {
-    switch (status) {
-      case EquipmentState.Green:
-        return "bg-green-500";
-      case EquipmentState.Red:
-        return "bg-red-500";
-      case EquipmentState.Yellow:
-        return "bg-yellow-500";
-      default:
-        return "bg-gary-500";
-    }
-  };
-
   const isCurrentState = (state: EquipmentState) => {
     return state === overview?.state;
   };
@@ -74,17 +64,21 @@ export default function EquipmentPage() {
       {isLoading && <p>Loading...</p>}
       <section>
         <h1 className="text-2xl font-bold p-4">Equipment</h1>
-        <div
-          className={
-            getEquipmentStatusColor(overview?.state) +
-            " flex-col justify-between items-center rounded-lg p-4 text-white"
-          }
-        >
-          <div className="text-center">
+        <div className="flex-col justify-between items-center rounded-lg p-4 text-white bg-slate-800">
+          <div className="grid gap-4 text-center">
             <h2 className="text-lg font-bold">{overview?.name}</h2>
             <p>{overview?.location}</p>
             <p>{overview?.changedBy}</p>
-            <p>{overview?.changedAt}</p>
+            <p>{formatDate(overview?.changedAt)}</p>
+            <p
+              className={
+                "flex gap-4 p-2 rounded-lg justify-center " +
+                getColorClasses(overview?.state)
+              }
+            >
+              <p>State:</p>
+              <strong>{getEquipmentStateName(overview?.state)}</strong>
+            </p>
           </div>
         </div>
         <div className="flex gap-4 justify-center p-4">

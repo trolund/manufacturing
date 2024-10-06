@@ -52,10 +52,7 @@ export default function HistoryPage() {
         {overviewItems?.map((item) => (
           <div
             key={item.id}
-            className={
-              getColorClasses(item.state) +
-              " p-4 text-white rounded-lg md:flex gap-4 justify-between"
-            }
+            className="p-4 text-white rounded-lg md:flex gap-4 justify-between items-center bg-gray-800"
           >
             <div className="flex gap-4">
               <p>Machine ID:</p>
@@ -72,7 +69,11 @@ export default function HistoryPage() {
               <strong>{formatDate(item.changedAt)}</strong>
             </div>
 
-            <div className="flex gap-4">
+            <div
+              className={
+                "flex gap-4 p-2 rounded-lg " + getColorClasses(item.state)
+              }
+            >
               <p>State:</p>
               <strong>{getEquipmentStateName(item.state)}</strong>
             </div>
