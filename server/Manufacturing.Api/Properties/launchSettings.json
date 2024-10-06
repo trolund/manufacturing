@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Timelogger.Api": {
+    "Manufacturing.Api": {
       "commandName": "Project",
       "launchUrl": "api/values",
       "applicationUrl": "http://localhost:3001",

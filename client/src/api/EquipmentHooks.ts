@@ -43,6 +43,7 @@ export const useUpdateEquipmentStatus = (
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["equipment", equipmentId] });
+      queryClient.invalidateQueries({ queryKey: ["history"] });
     },
   });
 };

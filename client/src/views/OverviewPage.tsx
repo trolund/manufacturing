@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useSignalR from "../api/useSignalR";
 import { useGetEquipmentOverviews } from "../api/EquipmentHooks";
 import { EquipmentOverview } from "../models/EquipmentOverview";
@@ -7,8 +6,6 @@ import { EquipmentState } from "../models/EquipmentState";
 import { BASE_URL_SIGNALR } from "../contants/constants";
 
 export default function OverviewPage() {
-  const navigate = useNavigate();
-
   const { data: initOverview, isLoading } = useGetEquipmentOverviews();
 
   const [overviewItems, setOverviewItems] = useState<
@@ -20,13 +17,13 @@ export default function OverviewPage() {
   }, [initOverview]);
 
   // Set up event listeners
-  const evnetHandlers = {
+  const eventHandlers = {
     EquipmentsStatusChanged: (data: EquipmentOverview[]) => {
       setOverviewItems(data);
     },
   };
 
-  const [_, isconnected] = useSignalR(BASE_URL_SIGNALR, evnetHandlers);
+  const [_, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
 
   const getColor = (status: EquipmentState | null) => {
     switch (status) {
@@ -54,7 +51,10 @@ export default function OverviewPage() {
           <a key={item.id} href={`/equipment/${item.id}`}>
             <div
               key={item.id}
-              className={getColor(item.state) + " p-4 text-white rounded-lg"}
+              className={
+                getColor(item.state) +
+                " p-4 text-white rounded-lg hover:scale-105 transition-all"
+              }
             >
               <strong>{item.name}</strong>
               <p>{item.location}</p>

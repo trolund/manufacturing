@@ -35,15 +35,6 @@ export default function EquipmentPage() {
 
   const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, evnetHandlers);
 
-  const formatMinutesToDaysHoursAndMinutes = (totalMinutes: number): string => {
-    const days = Math.floor(totalMinutes / 1440); // 1440 minutes in a day
-    const remainingMinutesAfterDays = totalMinutes % 1440;
-    const hours = Math.floor(remainingMinutesAfterDays / 60);
-    const minutes = remainingMinutesAfterDays % 60;
-
-    return `${days}d ${hours}h ${minutes}m`;
-  };
-
   useEffect(() => {
     if (connection === null || !isconnected) {
       return;
@@ -77,8 +68,6 @@ export default function EquipmentPage() {
   };
 
   const keys = Object.keys(EquipmentState).filter((x) => isNaN(Number(x)));
-
-  console.log(keys);
 
   return (
     <>

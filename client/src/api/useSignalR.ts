@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { HubConnectionBuilder, HubConnection } from "@microsoft/signalr";
+import {
+  HubConnectionBuilder,
+  HubConnection,
+  HttpTransportType,
+} from "@microsoft/signalr";
 
 const useSignalR = (
   url: string,
@@ -15,7 +19,10 @@ const useSignalR = (
     const connection = new HubConnectionBuilder()
       .withAutomaticReconnect()
       .configureLogging("debug")
-      .withUrl(url)
+      .withUrl(url, {
+        skipNegotiation: true, // skipNegotiation as we specify WebSockets
+        transport: HttpTransportType.WebSockets, // force WebSocket transport
+      })
       .build();
 
     // Start the connection
@@ -25,6 +32,15 @@ const useSignalR = (
         console.debug("SignalR connected");
         setIsConnected(true);
         setHubConnection(connection);
+      } catch (error) {
+        console.error("Error while starting connection:", error);
+      }
+    };
+
+    const stopConnection = async () => {
+      try {
+        await connection.stop();
+        console.debug("SignalR stopped");
       } catch (error) {
         console.error("Error while starting connection:", error);
       }
@@ -51,7 +67,9 @@ const useSignalR = (
     });
 
     // Start the connection when the hook is first used
-    startConnection();
+    stopConnection().then(() => {
+      startConnection();
+    });
 
     // Clean up the connection when the component unmounts
     return () => {
@@ -60,7 +78,7 @@ const useSignalR = (
         setIsConnected(false);
       });
     };
-  }, [url]); // Depend on the URL to recreate the connection if it changes
+  }, []); // Depend on the URL to recreate the connection if it changes
 
   return [hubConnection, isConnected];
 };

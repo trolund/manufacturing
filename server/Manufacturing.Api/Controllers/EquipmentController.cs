@@ -9,7 +9,7 @@ namespace Manufacturing.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class EquipmentController(IEquipmentService equipmentService, IHubContext<StateChangeHub> stateChangeHub)
+public class EquipmentController(IEquipmentService equipmentService, IStateChangeHistoryService stateChangeHistoryService, IHubContext<StateChangeHub> stateChangeHub)
     : ControllerBase
 {
     /// <summary>
@@ -62,6 +62,8 @@ public class EquipmentController(IEquipmentService equipmentService, IHubContext
                 await equipmentService.GetEquipmentOverviews());
             _ = stateChangeHub.Clients.Group(equipmentId.ToString()).SendAsync("EquipmentStatusChanged",
                 await equipmentService.GetEquipmentOverview(equipmentId));
+            _ = stateChangeHub.Clients.Group("History").SendAsync("History",
+                await stateChangeHistoryService.GetMostResentStateChangeHistory());
         }
 
         return result ? Ok() : NotFound();

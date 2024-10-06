@@ -47,6 +47,7 @@ public class Startup
 
         // configure DI for application services
         services.AddScoped<IEquipmentService, EquipmentService>();
+        services.AddScoped<IStateChangeHistoryService, StateChangeHistoryService>();
 
         // configure DI for repos
         services.AddScoped<IStateChangeHistoryRepository, StateChangeHistoryRepository>();
@@ -57,6 +58,7 @@ public class Startup
 
         // Add framework services.
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseInMemoryDatabase("manufacturingDataDb"));
+        
         services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
         services.AddLogging(builder =>
@@ -117,7 +119,6 @@ public class Startup
 
 
         app.UseMvc();
-
         app.UseEndpoints(endpoints =>
             endpoints.MapHub<StateChangeHub>("/stateChangeHub"));
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Manufacturing.Data.Repositories;
 
-public class StateChangeHistoryRepository(ApplicationDbContext context, ILogger<StateChangeHistoryRepository> logger)
+public class StateChangeHistoryRepository(ApplicationDbContext context)
     : Repository<StateChangeHistory, Guid>(context), IStateChangeHistoryRepository
 {
     public Task<StateChangeHistory?> MostEquipmentState(int equipmentId)
@@ -14,5 +14,13 @@ public class StateChangeHistoryRepository(ApplicationDbContext context, ILogger<
             .Where(x => x.EquipmentId == equipmentId)
             .OrderByDescending(x => x.ChangedAt)
             .FirstOrDefault());
+    }
+    
+    public Task<List<StateChangeHistory>> GetMostResentStateChangeHistories(int numberOfHistories)
+    {
+        return Task.FromResult(context.StateChangeHistories
+            .OrderByDescending(x => x.ChangedAt)
+            .Take(10)
+            .ToList());
     }
 }

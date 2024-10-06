@@ -9,4 +9,9 @@ public class StateChangeHub : Hub
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, equipmentId.ToString());
     }
+    
+    public async Task SubscribeToHistory()
+    {
+        await Groups.AddToGroupAsync(Context.ConnectionId, "History");
+    }
 }

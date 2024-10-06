@@ -3,6 +3,7 @@ import "./App.css";
 import OverviewPage from "./views/OverviewPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import EquipmentPage from "./views/EquipmentPage";
+import HistoryPage from "./views/HistoryPage";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function App() {
                 path="equipment/:equipmentId"
                 element={<EquipmentPage />}
               />
+              <Route path="history" element={<HistoryPage />} />
             </Routes>
           </BrowserRouter>
         </div>
