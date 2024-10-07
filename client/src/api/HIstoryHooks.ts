@@ -4,7 +4,7 @@ import { BASE_URL } from "../contants/constants";
 
 export const useGetHistory = () => {
   const fetchHistory = async () => {
-    const response = await axios.get(`${BASE_URL}/History`);
+    const response = await axios.get(`${BASE_URL}/history/recent`);
     return response.data;
   };
 

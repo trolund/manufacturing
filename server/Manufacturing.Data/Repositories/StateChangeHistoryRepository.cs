@@ -1,14 +1,13 @@
 using Manufacturing.Data.Contexts;
 using Manufacturing.Data.Models;
 using Manufacturing.Data.Repositories.Interface;
-using Microsoft.Extensions.Logging;
 
 namespace Manufacturing.Data.Repositories;
 
 public class StateChangeHistoryRepository(ApplicationDbContext context)
     : Repository<StateChangeHistory, Guid>(context), IStateChangeHistoryRepository
 {
-    public Task<StateChangeHistory?> MostEquipmentState(int equipmentId)
+    public Task<StateChangeHistory?> MostRecentEquipmentState(int equipmentId)
     {
         return Task.FromResult(context.StateChangeHistories
             .Where(x => x.EquipmentId == equipmentId)
@@ -20,7 +19,7 @@ public class StateChangeHistoryRepository(ApplicationDbContext context)
     {
         return Task.FromResult(context.StateChangeHistories
             .OrderByDescending(x => x.ChangedAt)
-            .Take(10)
+            .Take(numberOfHistories)
             .ToList());
     }
 }

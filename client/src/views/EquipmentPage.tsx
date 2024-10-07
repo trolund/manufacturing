@@ -20,11 +20,9 @@ export default function EquipmentPage() {
   const [overview, setOverview] = useState<EquipmentOverview | undefined>(
     undefined
   );
-  const {
-    data: equipmentInit,
-    isLoading,
-    refetch,
-  } = useGetEquipmentOverview(Number(equipmentId));
+  const { data: equipmentInit, isLoading } = useGetEquipmentOverview(
+    Number(equipmentId)
+  );
   const queryClient = useQueryClient();
   const { mutate } = useUpdateEquipmentStatus(Number(equipmentId), queryClient);
 
@@ -32,13 +30,13 @@ export default function EquipmentPage() {
     setOverview(equipmentInit);
   }, [equipmentInit]);
 
-  const evnetHandlers = {
+  const eventHandlers = {
     EquipmentStatusChanged: (data: EquipmentOverview) => {
       setOverview(data);
     },
   };
 
-  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, evnetHandlers);
+  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
 
   useEffect(() => {
     if (connection === null || !isconnected) {
@@ -51,7 +49,7 @@ export default function EquipmentPage() {
         console.debug(`Subscribe to equipment with id: ${equipmentId}`)
       )
       .catch((err) => console.error(err));
-  }, [connection, isconnected]);
+  }, [connection, isconnected, equipmentId]);
 
   const isCurrentState = (state: EquipmentState) => {
     return state === overview?.state;
@@ -101,14 +99,7 @@ export default function EquipmentPage() {
             </button>
           ))}
         </div>
-        <div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => refetch()}
-          >
-            Refresh
-          </button>
-        </div>
+        <div></div>
       </section>
     </>
   );

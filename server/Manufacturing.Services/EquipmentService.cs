@@ -56,7 +56,9 @@ public class EquipmentService(IUnitOfWork unitOfWork, IMapper mapper) : IEquipme
         foreach (var equipment in equipments)
         {
             var stateChangeHistories = stateHistories.ToList();
-            var lastState = stateChangeHistories.Where(x => x.EquipmentId == equipment.Id).MaxBy(x => x.ChangedAt);
+            var lastState = stateChangeHistories
+                .Where(x => x.EquipmentId == equipment.Id)
+                .MaxBy(x => x.ChangedAt);
 
             result.Add(new EquipmentOverviewDTO
             {
@@ -75,7 +77,7 @@ public class EquipmentService(IUnitOfWork unitOfWork, IMapper mapper) : IEquipme
     public async Task<EquipmentOverviewDTO> GetEquipmentOverview(int equipmentId)
     {
         var equipment = await unitOfWork.Equipments.GetEquipmentsById(equipmentId);
-        var stateHistories = await unitOfWork.StateChangeHistories.MostEquipmentState(equipmentId);
+        var stateHistories = await unitOfWork.StateChangeHistories.MostRecentEquipmentState(equipmentId);
 
         return new EquipmentOverviewDTO
         {

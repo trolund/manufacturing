@@ -12,8 +12,9 @@ public class StateChangeHistoryService(IUnitOfWork unitOfWork, IMapper mapper) :
         return mapper.Map<IEnumerable<StateChangeHistoryDTO>>(await unitOfWork.StateChangeHistories.GetAll());      
     }
     
-    public async Task<IEnumerable<StateChangeHistoryDTO>> GetMostResentStateChangeHistory()
+    public async Task<IEnumerable<StateChangeHistoryDTO>> GetMostResentStateChangeHistory(int numberOfHistories = 10)
     {
-        return mapper.Map<IEnumerable<StateChangeHistoryDTO>>(await unitOfWork.StateChangeHistories.GetMostResentStateChangeHistories(10));
+        return mapper.Map<IEnumerable<StateChangeHistoryDTO>>(await unitOfWork.StateChangeHistories
+            .GetMostResentStateChangeHistories(numberOfHistories));
     }
 }

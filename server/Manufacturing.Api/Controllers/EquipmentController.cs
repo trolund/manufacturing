@@ -63,7 +63,7 @@ public class EquipmentController(IEquipmentService equipmentService, IStateChang
             _ = stateChangeHub.Clients.Group(equipmentId.ToString()).SendAsync("EquipmentStatusChanged",
                 await equipmentService.GetEquipmentOverview(equipmentId));
             _ = stateChangeHub.Clients.Group("History").SendAsync("History",
-                await stateChangeHistoryService.GetMostResentStateChangeHistory());
+                await stateChangeHistoryService.GetMostResentStateChangeHistory(10));
         }
 
         return result ? Ok() : NotFound();

@@ -21,13 +21,13 @@ export default function HistoryPage() {
   }, [initHistory]);
 
   // Set up event listeners
-  const evnetHandlers = {
+  const eventHandlers = {
     history: (data: StateChangeHistory[]) => {
       setOverviewItems(data);
     },
   };
 
-  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, evnetHandlers);
+  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
 
   useEffect(() => {
     if (connection === null || !isconnected) {
@@ -36,7 +36,7 @@ export default function HistoryPage() {
 
     connection
       .invoke("SubscribeToHistory")
-      .then(() => console.debug(`Subscribe to history`))
+      .then(() => console.debug(`Subscribed to history`))
       .catch((err) => console.error(err));
   }, [connection, isconnected]);
 
