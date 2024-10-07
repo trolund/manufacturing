@@ -140,6 +140,10 @@ public class Startup
         context.Equipments.Add(new Equipment { Id = 3, Name = "Machine 3", Location = "Production Line 1" });
         context.Equipments.Add(new Equipment { Id = 4, Name = "Machine 4", Location = "Production Line 1" });
         context.Equipments.Add(new Equipment { Id = 5, Name = "Machine 5", Location = "Production Line 2" });
+        context.Equipments.Add(new Equipment { Id = 6, Name = "Machine 6", Location = "Production Line 2" });
+        context.Equipments.Add(new Equipment { Id = 7, Name = "Machine 7", Location = "Production Line 2" });
+        context.Equipments.Add(new Equipment { Id = 8, Name = "Machine 8", Location = "Production Line 2" });
+        
 
         context.StateChangeHistories.Add(new StateChangeHistory
         {
@@ -160,6 +164,18 @@ public class Startup
         context.StateChangeHistories.Add(new StateChangeHistory
         {
             EquipmentId = 5, State = EquipmentState.Red, ChangedAt = DateTime.Now, ChangedBy = "Worker 1"
+        });
+        context.StateChangeHistories.Add(new StateChangeHistory
+        {
+            EquipmentId = 6, State = EquipmentState.Red, ChangedAt = DateTime.Now, ChangedBy = "Worker 1"
+        });
+        context.StateChangeHistories.Add(new StateChangeHistory
+        {
+            EquipmentId = 7, State = EquipmentState.Red, ChangedAt = DateTime.Now, ChangedBy = "Worker 1"
+        });
+        context.StateChangeHistories.Add(new StateChangeHistory
+        {
+            EquipmentId = 8, State = EquipmentState.Red, ChangedAt = DateTime.Now, ChangedBy = "Worker 1"
         });
 
         context.SaveChanges();
