@@ -18,10 +18,10 @@ import {
 export default function EquipmentPage() {
   const { equipmentId } = useParams();
   const [overview, setOverview] = useState<EquipmentOverview | undefined>(
-    undefined
+    undefined,
   );
   const { data: equipmentInit, isLoading } = useGetEquipmentOverview(
-    Number(equipmentId)
+    Number(equipmentId),
   );
   const queryClient = useQueryClient();
   const { mutate } = useUpdateEquipmentStatus(Number(equipmentId), queryClient);
@@ -46,7 +46,7 @@ export default function EquipmentPage() {
     connection
       .invoke("SubscribeToEquipmentChanges", Number(equipmentId))
       .then(() =>
-        console.debug(`Subscribe to equipment with id: ${equipmentId}`)
+        console.debug(`Subscribe to equipment with id: ${equipmentId}`),
       )
       .catch((err) => console.error(err));
   }, [connection, isconnected, equipmentId]);
@@ -61,8 +61,8 @@ export default function EquipmentPage() {
     <>
       {isLoading && <p>Loading...</p>}
       <section>
-        <h1 className="text-2xl font-bold p-4">Equipment</h1>
-        <div className="flex-col justify-between items-center rounded-lg p-4 text-white bg-slate-800 border-slate-900 border-[1px]">
+        <h1 className="p-4 text-2xl font-bold">Equipment</h1>
+        <div className="flex-col items-center justify-between rounded-lg border-[1px] border-slate-900 bg-slate-800 p-4 text-white">
           <div className="grid gap-4 text-center">
             <h2 className="text-lg font-bold">{overview?.name}</h2>
             <p>{overview?.location}</p>
@@ -70,7 +70,7 @@ export default function EquipmentPage() {
             <p>{formatDate(overview?.changedAt)}</p>
             <p
               className={
-                "flex gap-4 p-2 rounded-lg justify-center " +
+                "flex justify-center gap-4 rounded-lg p-2 " +
                 getColorClasses(overview?.state)
               }
             >
@@ -79,14 +79,14 @@ export default function EquipmentPage() {
             </p>
           </div>
         </div>
-        <div className="flex gap-4 justify-center p-4">
+        <div className="flex justify-center gap-4 p-4">
           {keys.map((key) => (
             <button
               key={key}
               className={
-                "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded " +
+                "rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 " +
                 (isCurrentState(
-                  EquipmentState[key as keyof typeof EquipmentState]
+                  EquipmentState[key as keyof typeof EquipmentState],
                 )
                   ? "bg-blue-700"
                   : "")

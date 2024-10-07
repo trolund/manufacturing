@@ -41,19 +41,19 @@ export default function OverviewPage() {
   return (
     <>
       {isconnected ? (
-        <p className="text-green-500 p-5">Connected</p>
+        <p className="p-5 text-green-500">Connected</p>
       ) : (
-        <p className="text-red-500 p-5">Not connected</p>
+        <p className="p-5 text-red-500">Not connected</p>
       )}
       {isLoading && <p>Loading...</p>}
-      <div className="grid md:grid-cols-4 gap-4 sm:grid-cols-2 grid-cols-1">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {overviewItems?.map((item) => (
           <a key={item.id} href={`/equipment/${item.id}`}>
             <div
               key={item.id}
               className={
                 getColor(item.state) +
-                " p-4 text-white rounded-lg hover:scale-105 transition-all"
+                " rounded-lg p-4 text-white transition-all hover:scale-105"
               }
             >
               <strong>{item.name}</strong>

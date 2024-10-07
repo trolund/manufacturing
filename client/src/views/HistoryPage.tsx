@@ -43,16 +43,16 @@ export default function HistoryPage() {
   return (
     <>
       {isconnected ? (
-        <p className="text-green-500 p-5">Connected</p>
+        <p className="p-5 text-green-500">Connected</p>
       ) : (
-        <p className="text-red-500 p-5">Not connected</p>
+        <p className="p-5 text-red-500">Not connected</p>
       )}
       {isLoading && <p>Loading...</p>}
-      <div className="grid gap-4 grid-cols-1">
+      <div className="grid grid-cols-1 gap-4">
         {overviewItems?.map((item) => (
           <div
             key={item.id}
-            className="p-4 text-white rounded-lg md:flex gap-4 justify-between items-center bg-gray-800 border-slate-900 border-[1px]"
+            className="items-center justify-between gap-4 rounded-lg border-[1px] border-slate-900 bg-gray-800 p-4 text-white md:flex"
           >
             <div className="flex gap-4">
               <p>Machine ID:</p>
@@ -71,7 +71,7 @@ export default function HistoryPage() {
 
             <div
               className={
-                "flex gap-4 p-2 rounded-lg " + getColorClasses(item.state)
+                "flex gap-4 rounded-lg p-2 " + getColorClasses(item.state)
               }
             >
               <p>State:</p>
