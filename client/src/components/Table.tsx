@@ -9,7 +9,7 @@ import {
 import { UseQueryResult } from "@tanstack/react-query";
 import { Paginated } from "../models/Paginated";
 
-type ProjectTableProps<T extends unknown> = {
+type TableProps<T extends unknown> = {
   searchTerm?: string;
   data?: T[];
   columns: ColumnDef<T>[];
@@ -29,7 +29,7 @@ export const Table = <T extends unknown>({
   defSortOrderKey,
   onRowClick,
   dataFetcher,
-}: ProjectTableProps<T>) => {
+}: TableProps<T>) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
