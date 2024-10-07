@@ -52,7 +52,7 @@ export default function HistoryPage() {
         {overviewItems?.map((item) => (
           <div
             key={item.id}
-            className="p-4 text-white rounded-lg md:flex gap-4 justify-between items-center bg-gray-800"
+            className="p-4 text-white rounded-lg md:flex gap-4 justify-between items-center bg-gray-800 border-slate-900 border-[1px]"
           >
             <div className="flex gap-4">
               <p>Machine ID:</p>

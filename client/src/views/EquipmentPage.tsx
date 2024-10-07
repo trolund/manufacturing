@@ -64,7 +64,7 @@ export default function EquipmentPage() {
       {isLoading && <p>Loading...</p>}
       <section>
         <h1 className="text-2xl font-bold p-4">Equipment</h1>
-        <div className="flex-col justify-between items-center rounded-lg p-4 text-white bg-slate-800">
+        <div className="flex-col justify-between items-center rounded-lg p-4 text-white bg-slate-800 border-slate-900 border-[1px]">
           <div className="grid gap-4 text-center">
             <h2 className="text-lg font-bold">{overview?.name}</h2>
             <p>{overview?.location}</p>
