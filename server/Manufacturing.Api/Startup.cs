@@ -132,8 +132,7 @@ public class Startup
     private static void SeedDatabase(IServiceScope scope)
     {
         var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-
-        // TODO - Add seed data here.
+        
         // Seed the database.
         context.Equipments.Add(new Equipment { Id = 1, Name = "Machine 1", Location = "Production Line 1" });
         context.Equipments.Add(new Equipment { Id = 2, Name = "Machine 2", Location = "Production Line 1" });
