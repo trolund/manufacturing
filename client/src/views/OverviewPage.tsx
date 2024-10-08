@@ -3,6 +3,7 @@ import useSignalR from "../api/useSignalR";
 import { EquipmentOverview } from "../models/EquipmentOverview";
 import { BASE_URL_SIGNALR } from "../contants/constants";
 import { getColorClasses } from "../services/ClassesService";
+import ConnectionBar from "../components/ConnectionBar";
 
 export default function OverviewPage() {
   const [overviewItems, setOverviewItems] = useState<
@@ -31,11 +32,7 @@ export default function OverviewPage() {
 
   return (
     <>
-      {isconnected ? (
-        <p className="p-5 text-green-500">Connected</p>
-      ) : (
-        <p className="p-5 text-red-500">Not connected</p>
-      )}
+      <ConnectionBar isconnected />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {overviewItems?.map((item) => (
           <a key={item.id} href={`/equipment/${item.id}`}>

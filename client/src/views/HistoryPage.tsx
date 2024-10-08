@@ -7,6 +7,7 @@ import {
   getEquipmentStateName,
 } from "../services/FormatingService";
 import { getColorClasses } from "../services/ClassesService";
+import ConnectionBar from "../components/ConnectionBar";
 
 export default function HistoryPage() {
   const [overviewItems, setOverviewItems] = useState<
@@ -35,11 +36,7 @@ export default function HistoryPage() {
 
   return (
     <>
-      {isconnected ? (
-        <p className="p-5 text-green-500">Connected</p>
-      ) : (
-        <p className="p-5 text-red-500">Not connected</p>
-      )}
+      <ConnectionBar isconnected />
       <div className="grid grid-cols-1 gap-4">
         {overviewItems?.map((item) => (
           <div
