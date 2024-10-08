@@ -7,9 +7,9 @@ import {
   getEquipmentStateName,
 } from "../services/FormatingService";
 import { getColorClasses } from "../services/ClassesService";
-import ConnectionBar from "../components/ConnectionBar";
 import { LogLevel } from "@microsoft/signalr";
 import { connectionHandler } from "../services/EventService";
+import cn from "classnames";
 
 export default function HistoryPage() {
   const [overviewItems, setOverviewItems] = useState<
@@ -65,9 +65,10 @@ export default function HistoryPage() {
             </div>
 
             <div
-              className={
-                "flex gap-4 rounded-lg p-2 " + getColorClasses(item.state)
-              }
+              className={cn(
+                "flex gap-4 rounded-lg p-2",
+                getColorClasses(item.state),
+              )}
             >
               <p>State:</p>
               <strong>{getEquipmentStateName(item.state)}</strong>

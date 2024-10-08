@@ -11,9 +11,9 @@ import {
   formatDate,
   getEquipmentStateName,
 } from "../services/FormatingService";
-import ConnectionBar from "../components/ConnectionBar";
 import { connectionHandler } from "../services/EventService";
 import { LogLevel } from "@microsoft/signalr";
+import cn from "classnames";
 
 export default function EquipmentPage() {
   const { equipmentId } = useParams();
@@ -64,10 +64,10 @@ export default function EquipmentPage() {
           <p>{overview?.changedBy}</p>
           <p>{formatDate(overview?.changedAt)}</p>
           <div
-            className={
-              "flex justify-center gap-4 rounded-lg p-2 " +
-              getColorClasses(overview?.state)
-            }
+            className={cn(
+              "flex justify-center gap-4 rounded-lg p-2 transition-all",
+              getColorClasses(overview?.state),
+            )}
           >
             <p>State:</p>
             <strong>{getEquipmentStateName(overview?.state)}</strong>
@@ -78,14 +78,12 @@ export default function EquipmentPage() {
         {keys.map((key) => (
           <button
             key={key}
-            className={
-              "rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 " +
-              (isCurrentState(
-                EquipmentState[key as keyof typeof EquipmentState],
-              )
+            className={cn(
+              "rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700",
+              isCurrentState(EquipmentState[key as keyof typeof EquipmentState])
                 ? "bg-blue-700"
-                : "")
-            }
+                : "",
+            )}
             onClick={() =>
               mutate(EquipmentState[key as keyof typeof EquipmentState])
             }

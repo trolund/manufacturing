@@ -3,9 +3,9 @@ import useSignalR from "../api/useSignalR";
 import { EquipmentOverview } from "../models/EquipmentOverview";
 import { BASE_URL_SIGNALR } from "../contants/constants";
 import { getColorClasses } from "../services/ClassesService";
-import ConnectionBar from "../components/ConnectionBar";
 import { LogLevel } from "@microsoft/signalr";
 import { connectionHandler } from "../services/EventService";
+import cn from "classnames";
 
 export default function OverviewPage() {
   const [overviewItems, setOverviewItems] = useState<
@@ -44,10 +44,10 @@ export default function OverviewPage() {
           <a key={item.id} href={`/equipment/${item.id}`}>
             <div
               key={item.id}
-              className={
-                getColorClasses(item.state) +
-                " rounded-lg p-4 text-white transition-all hover:scale-105"
-              }
+              className={cn(
+                getColorClasses(item.state),
+                "rounded-lg p-4 text-white transition-all hover:scale-105",
+              )}
             >
               <strong>{item.name}</strong>
               <p>{item.location}</p>
