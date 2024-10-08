@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   HubConnectionBuilder,
   HubConnection,
@@ -9,11 +9,18 @@ const useSignalR = (
   url: string,
   eventHandlers: Object = {},
   logLevel: LogLevel = LogLevel.Critical,
+  connectionChangeCallback?: (isConnected: boolean) => void,
 ): [HubConnection | null, boolean] => {
   const [hubConnection, setHubConnection] = useState<HubConnection | null>(
     null,
   );
   const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    if (connectionChangeCallback) {
+      connectionChangeCallback(isConnected);
+    }
+  }, [isConnected, connectionChangeCallback]);
 
   useEffect(() => {
     // Create the HubConnection

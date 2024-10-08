@@ -8,6 +8,8 @@ import {
 } from "../services/FormatingService";
 import { getColorClasses } from "../services/ClassesService";
 import ConnectionBar from "../components/ConnectionBar";
+import { LogLevel } from "@microsoft/signalr";
+import { connectionHandler } from "../services/EventService";
 
 export default function HistoryPage() {
   const [overviewItems, setOverviewItems] = useState<
@@ -21,7 +23,12 @@ export default function HistoryPage() {
     },
   };
 
-  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
+  const [connection, isconnected] = useSignalR(
+    BASE_URL_SIGNALR,
+    eventHandlers,
+    LogLevel.Critical,
+    connectionHandler,
+  );
 
   useEffect(() => {
     if (connection === null || !isconnected) {
@@ -36,7 +43,6 @@ export default function HistoryPage() {
 
   return (
     <>
-      <ConnectionBar isconnected={isconnected} />
       <div className="grid grid-cols-1 gap-4">
         {overviewItems?.map((item) => (
           <div
