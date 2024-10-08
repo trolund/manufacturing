@@ -36,7 +36,7 @@ export default function HistoryPage() {
 
   return (
     <>
-      <ConnectionBar isconnected />
+      <ConnectionBar isconnected={isconnected} />
       <div className="grid grid-cols-1 gap-4">
         {overviewItems?.map((item) => (
           <div

@@ -19,7 +19,7 @@ export const useGetEquipmentOverviews = () => {
 export const useGetEquipmentOverview = (equipmentId: number) => {
   const fetchEquipment = async (): Promise<EquipmentOverview> => {
     const response = await axios.get(
-      `${BASE_URL}/equipment/${equipmentId}/overview`
+      `${BASE_URL}/equipment/${equipmentId}/overview`,
     );
     return response.data;
   };
@@ -32,14 +32,14 @@ export const useGetEquipmentOverview = (equipmentId: number) => {
 
 export const useUpdateEquipmentStatus = (
   equipmentId: number,
-  queryClient: QueryClient
+  queryClient: QueryClient,
 ) => {
   return useMutation({
     mutationFn: (state: EquipmentState) => {
       const url = new URL(`${BASE_URL}/equipment/${equipmentId}/status`);
       url.searchParams.append("state", Number(state) + "");
 
-      return axios.put(url.toString());
+      return axios.post(url.toString());
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["equipment", equipmentId] });

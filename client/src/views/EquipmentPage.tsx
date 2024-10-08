@@ -49,7 +49,7 @@ export default function EquipmentPage() {
 
   return (
     <section>
-      <ConnectionBar isconnected />
+      <ConnectionBar isconnected={isconnected} />
       <h1 className="p-4 text-2xl font-bold">Equipment</h1>
       <div className="flex-col items-center justify-between rounded-lg border-[1px] border-slate-900 bg-slate-800 p-4 text-white">
         <div className="grid gap-4 text-center">

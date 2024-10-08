@@ -15,13 +15,6 @@ const useSignalR = (
   );
   const [isConnected, setIsConnected] = useState(false);
 
-  useDebugValue(url, (url) => `SignalR connection to ${url}`);
-  useDebugValue(
-    eventHandlers,
-    (eventHandlers) => `Event handlers: ${eventHandlers}`,
-  );
-  useDebugValue(logLevel, (logLevel) => `Log level: ${logLevel}`);
-
   useEffect(() => {
     // Create the HubConnection
     const connection = new HubConnectionBuilder()

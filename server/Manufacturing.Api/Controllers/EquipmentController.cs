@@ -41,8 +41,7 @@ public class EquipmentController(
     /// </summary>
     /// <param name="equipment">The equipment</param>
     /// <returns>The updated equipment</returns>
-    [HttpPut]
-    [Route("{equipmentId}")]
+    [HttpPut("{equipmentId}")]
     public async Task<IActionResult> Update([FromBody] EquipmentDTO equipment)
     {
         return Ok(await equipmentService.UpdateEquipments(equipment));
@@ -54,7 +53,7 @@ public class EquipmentController(
     /// <param name="equipmentId">The equipment ID</param>
     /// <param name="state">The new state</param>
     /// <returns>True if the status was updated, false otherwise</returns>
-    [HttpPut("{equipmentId}/status")]
+    [HttpPost("{equipmentId}/status")]
     public async Task<IActionResult> UpdateStatus([FromRoute] int equipmentId, [FromQuery] EquipmentStateDTO state)
     {
         var result = await equipmentService.UpdateEquipmentStatus(equipmentId, state);
