@@ -1,28 +1,33 @@
-import { useEffect, useState } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import {
   HubConnectionBuilder,
   HubConnection,
-  HttpTransportType,
+  LogLevel,
 } from "@microsoft/signalr";
 
 const useSignalR = (
   url: string,
-  eventHandlers = {}
+  eventHandlers: Object = {},
+  logLevel: LogLevel = LogLevel.Critical,
 ): [HubConnection | null, boolean] => {
   const [hubConnection, setHubConnection] = useState<HubConnection | null>(
-    null
+    null,
   );
   const [isConnected, setIsConnected] = useState(false);
+
+  useDebugValue(url, (url) => `SignalR connection to ${url}`);
+  useDebugValue(
+    eventHandlers,
+    (eventHandlers) => `Event handlers: ${eventHandlers}`,
+  );
+  useDebugValue(logLevel, (logLevel) => `Log level: ${logLevel}`);
 
   useEffect(() => {
     // Create the HubConnection
     const connection = new HubConnectionBuilder()
       .withAutomaticReconnect()
-      .configureLogging("debug")
-      .withUrl(url, {
-        skipNegotiation: true, // skipNegotiation as we specify WebSockets
-        transport: HttpTransportType.WebSockets, // force WebSocket transport
-      })
+      .configureLogging(logLevel)
+      .withUrl(url)
       .build();
 
     // Start the connection
@@ -40,7 +45,6 @@ const useSignalR = (
     const stopConnection = async () => {
       try {
         await connection.stop();
-        console.debug("SignalR stopped");
       } catch (error) {
         console.error("Error while starting connection:", error);
       }
@@ -78,7 +82,7 @@ const useSignalR = (
         setIsConnected(false);
       });
     };
-  }, []); // Depend on the URL to recreate the connection if it changes
+  }, [url, logLevel]);
 
   return [hubConnection, isConnected];
 };
