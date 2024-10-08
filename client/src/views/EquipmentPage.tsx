@@ -32,7 +32,6 @@ export default function EquipmentPage() {
       return;
     }
 
-    connection.invoke("GetEquipmentStateChange", Number(equipmentId));
     connection
       .invoke("SubscribeToEquipmentChanges", Number(equipmentId))
       .then(() =>

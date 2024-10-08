@@ -9,7 +9,10 @@ namespace Manufacturing.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class EquipmentController(IEquipmentService equipmentService, IStateChangeHistoryService stateChangeHistoryService, IHubContext<StateChangeHub> stateChangeHub)
+public class EquipmentController(
+    IEquipmentService equipmentService,
+    IStateChangeHistoryService stateChangeHistoryService,
+    IHubContext<StateChangeHub> stateChangeHub)
     : ControllerBase
 {
     /// <summary>
@@ -58,11 +61,14 @@ public class EquipmentController(IEquipmentService equipmentService, IStateChang
 
         if (result)
         {
-            _ = stateChangeHub.Clients.All.SendAsync("EquipmentsStatusChanged",
+            // Notify clients
+            await stateChangeHub.Clients.Group("OverviewGroup").SendAsync("OverviewChanged",
                 await equipmentService.GetEquipmentOverviews());
-            _ = stateChangeHub.Clients.Group(equipmentId.ToString()).SendAsync("EquipmentStatusChanged",
+            
+            await stateChangeHub.Clients.Group(equipmentId.ToString()).SendAsync("EquipmentStatusChanged",
                 await equipmentService.GetEquipmentOverview(equipmentId));
-            _ = stateChangeHub.Clients.Group("History").SendAsync("History",
+            
+            await stateChangeHub.Clients.Group("HistoryGroup").SendAsync("HistoryChanged",
                 await stateChangeHistoryService.GetMostResentStateChangeHistory(10));
         }
 

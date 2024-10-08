@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import useSignalR from "../api/useSignalR";
 import { BASE_URL_SIGNALR } from "../contants/constants";
-import { useGetHistory } from "../api/HIstoryHooks";
 import { StateChangeHistory } from "../models/StateChangeHistory";
 import {
   formatDate,
@@ -10,19 +9,13 @@ import {
 import { getColorClasses } from "../services/ClassesService";
 
 export default function HistoryPage() {
-  const { data: initHistory, isLoading } = useGetHistory();
-
   const [overviewItems, setOverviewItems] = useState<
     StateChangeHistory[] | undefined
-  >(undefined);
-
-  useEffect(() => {
-    setOverviewItems(initHistory);
-  }, [initHistory]);
+  >();
 
   // Set up event listeners
   const eventHandlers = {
-    history: (data: StateChangeHistory[]) => {
+    HistoryChanged: (data: StateChangeHistory[]) => {
       setOverviewItems(data);
     },
   };
@@ -36,7 +29,7 @@ export default function HistoryPage() {
 
     connection
       .invoke("SubscribeToHistory")
-      .then(() => console.debug(`Subscribed to history`))
+      .then(() => console.debug(`Subscribed to state change history`))
       .catch((err) => console.error(err));
   }, [connection, isconnected]);
 
@@ -47,7 +40,6 @@ export default function HistoryPage() {
       ) : (
         <p className="p-5 text-red-500">Not connected</p>
       )}
-      {isLoading && <p>Loading...</p>}
       <div className="grid grid-cols-1 gap-4">
         {overviewItems?.map((item) => (
           <div

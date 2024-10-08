@@ -1,42 +1,33 @@
 import { useEffect, useState } from "react";
 import useSignalR from "../api/useSignalR";
-import { useGetEquipmentOverviews } from "../api/EquipmentHooks";
 import { EquipmentOverview } from "../models/EquipmentOverview";
-import { EquipmentState } from "../models/EquipmentState";
 import { BASE_URL_SIGNALR } from "../contants/constants";
+import { getColorClasses } from "../services/ClassesService";
 
 export default function OverviewPage() {
-  const { data: initOverview, isLoading } = useGetEquipmentOverviews();
-
   const [overviewItems, setOverviewItems] = useState<
     EquipmentOverview[] | undefined
-  >(undefined);
-
-  useEffect(() => {
-    setOverviewItems(initOverview);
-  }, [initOverview]);
+  >();
 
   // Set up event listeners
   const eventHandlers = {
-    EquipmentsStatusChanged: (data: EquipmentOverview[]) => {
+    OverviewChanged: (data: EquipmentOverview[]) => {
       setOverviewItems(data);
     },
   };
 
-  const [_, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
+  const [connection, isconnected] = useSignalR(BASE_URL_SIGNALR, eventHandlers);
 
-  const getColor = (status: EquipmentState | null) => {
-    switch (status) {
-      case EquipmentState.Green:
-        return "bg-green-500";
-      case EquipmentState.Yellow:
-        return "bg-yellow-500";
-      case EquipmentState.Red:
-        return "bg-red-500";
-      default:
-        return "bg-gray-500";
+  useEffect(() => {
+    if (connection === null || !isconnected) {
+      return;
     }
-  };
+
+    connection
+      .invoke("SubscribeToOverviewChanges")
+      .then(() => console.debug(`Subscribed to overview changes`))
+      .catch((err) => console.error(err));
+  }, [connection, isconnected]);
 
   return (
     <>
@@ -45,14 +36,13 @@ export default function OverviewPage() {
       ) : (
         <p className="p-5 text-red-500">Not connected</p>
       )}
-      {isLoading && <p>Loading...</p>}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
         {overviewItems?.map((item) => (
           <a key={item.id} href={`/equipment/${item.id}`}>
             <div
               key={item.id}
               className={
-                getColor(item.state) +
+                getColorClasses(item.state) +
                 " rounded-lg p-4 text-white transition-all hover:scale-105"
               }
             >

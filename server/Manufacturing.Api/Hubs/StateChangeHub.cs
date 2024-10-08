@@ -4,20 +4,33 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Manufacturing.Api.Hubs;
 
-public class StateChangeHub(IEquipmentService equipmentService) : Hub
+public class StateChangeHub(IEquipmentService equipmentService, IStateChangeHistoryService stateChangeHistoryService)
+    : Hub
 {
     public async Task SubscribeToEquipmentChanges(int equipmentId)
     {
+        // subscribe to changes
         await Groups.AddToGroupAsync(Context.ConnectionId, equipmentId.ToString());
+        // get initial state 
+        await Clients.Client(Context.ConnectionId)
+            .SendAsync("EquipmentStatusChanged", await equipmentService.GetEquipmentOverview(equipmentId));
     }
-    
+
     public async Task SubscribeToHistory()
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, "History");
+        // subscribe to changes
+        await Groups.AddToGroupAsync(Context.ConnectionId, "HistoryGroup");
+        // get initial state
+        await Clients.Group("HistoryGroup").SendAsync("HistoryChanged",
+            await stateChangeHistoryService.GetMostResentStateChangeHistory(10));
     }
-    
-    public async Task GetEquipmentStateChange(int equipmentId)
+
+    public async Task SubscribeToOverviewChanges()
     {
-        await Clients.Client(Context.ConnectionId).SendAsync("EquipmentStatusChanged", await equipmentService.GetEquipmentOverview(equipmentId));
+        // subscribe to changes
+        await Groups.AddToGroupAsync(Context.ConnectionId, "OverviewGroup");
+        // get initial state
+        await Clients.Group("OverviewGroup").SendAsync("OverviewChanged",
+            await equipmentService.GetEquipmentOverviews());
     }
 }
