@@ -23,4 +23,13 @@ public class EquipmentRepository(ApplicationDbContext context)
     {
         return await context.Equipments.FindAsync(equipmentId);
     }
+    
+    public async Task<IEnumerable<Equipment>> GetEquipmentsWithLatestState()
+    {   
+        return await context.Equipments
+            .Include(e => e.StateChangeHistories
+                .OrderByDescending(x => x.ChangedAt)
+                .Take(1))
+            .ToListAsync();
+    }
 }

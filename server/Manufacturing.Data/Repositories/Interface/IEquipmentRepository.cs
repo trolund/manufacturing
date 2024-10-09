@@ -7,4 +7,5 @@ public interface IEquipmentRepository
     Task<IEnumerable<Equipment>> GetAllEquipments();
     Task<Equipment?> GetEquipmentsById(int equipmentId);
     Task<Equipment?> UpdateEquipments(Equipment model);
+    Task<IEnumerable<Equipment>> GetEquipmentsWithLatestState();
 }

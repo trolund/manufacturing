@@ -47,31 +47,22 @@ public class EquipmentService(IUnitOfWork unitOfWork, IMapper mapper) : IEquipme
 
     public async Task<List<EquipmentOverviewDTO>> GetEquipmentOverviews()
     {
-        var equipments = await unitOfWork.Equipments.GetAllEquipments();
-        var stateHistories =
-            await unitOfWork.StateChangeHistories.GetAll(); // TODO in memory should be replaced with a query
-
-        var result = new List<EquipmentOverviewDTO>();
-
-        foreach (var equipment in equipments)
+        var equipments = await unitOfWork.Equipments.GetEquipmentsWithLatestState();
+        return equipments.Select(e =>
         {
-            var stateChangeHistories = stateHistories.ToList();
-            var lastState = stateChangeHistories
-                .Where(x => x.EquipmentId == equipment.Id)
-                .MaxBy(x => x.ChangedAt);
-
-            result.Add(new EquipmentOverviewDTO
+            var latestState = e.StateChangeHistories.FirstOrDefault();
+            return new EquipmentOverviewDTO
             {
-                Id = equipment.Id,
-                State = lastState is null ? null : mapper.Map<EquipmentStateDTO>(lastState.State),
-                Name = equipment.Name,
-                Location = equipment.Location,
-                ChangedAt = lastState?.ChangedAt ?? DateTime.MinValue,
-                ChangedBy = lastState?.ChangedBy ?? "Unknown"
-            });
-        }
-
-        return result;
+                Id = e.Id,
+                State = latestState is null
+                ? null
+                : mapper.Map<EquipmentStateDTO>(latestState.State),
+                Name = e.Name,
+                Location = e.Location,
+                ChangedAt = e.StateChangeHistories.FirstOrDefault()?.ChangedAt ?? DateTime.MinValue,
+                ChangedBy = e.StateChangeHistories.FirstOrDefault()?.ChangedBy ?? "Unknown"
+            };
+        }).ToList();
     }
 
     public async Task<EquipmentOverviewDTO> GetEquipmentOverview(int equipmentId)
